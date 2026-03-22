@@ -7,6 +7,7 @@
 
     <title>{{ setting('seo_title', 'Abdoul Sarba — Testeur QA / DevOps') }}</title>
     <meta name="description" content="{{ setting('seo_description', 'Portfolio de Abdoul Sarba, Testeur Logiciel QA / Testeur Automaticien') }}">
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
     @if(setting('seo_og_image'))
         <meta property="og:image" content="{{ asset('storage/' . setting('seo_og_image')) }}">
     @endif

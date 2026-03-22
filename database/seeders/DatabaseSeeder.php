@@ -54,6 +54,7 @@ class DatabaseSeeder extends Seeder
             'social_github'   => 'https://github.com/abdoul-sarba',
             'social_linkedin' => 'https://linkedin.com/in/abdoul-sarba',
             'social_twitter'  => '',
+            'social_whatsapp' => '2250170998499',
 
             // Sections
             'site_title'              => 'Portfolio QA DevOps',

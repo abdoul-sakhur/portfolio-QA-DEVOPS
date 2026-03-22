@@ -14,7 +14,7 @@
     </div>
     <div>
         <label class="block text-sm text-text-muted mb-1">Contenu *</label>
-        <textarea name="content" id="editor-content" rows="12" required
+        <textarea name="content" id="editor-content" rows="12"
                   class="w-full bg-bg-dark border border-gray-800 rounded-lg px-4 py-3 text-text-main focus:outline-none focus:border-accent transition text-sm font-mono resize-y">{{ old('content', $p?->content) }}</textarea>
         @error('content') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
     </div>
@@ -46,10 +46,12 @@
 </div>
 
 @push('scripts')
-<script src="https://cdn.tiny.cloud/1/2v50jqnfctgrtpybuubv81g67u0vqxfk1v9pvwuqsiv06006/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js"></script>
 <script>
     tinymce.init({
         selector: '#editor-content',
+        base_url: 'https://cdn.jsdelivr.net/npm/tinymce@6',
+        suffix: '.min',
         height: 500,
         menubar: true,
         plugins: [
@@ -90,7 +92,15 @@
         file_picker_types: 'image',
         setup: function(editor) {
             editor.on('init', function() {
-                // Set CSRF token for uploads
+                // Sync content to textarea on form submit
+                var form = editor.getElement().closest('form');
+                if (form) {
+                    form.addEventListener('submit', function() {
+                        editor.save();
+                    });
+                }
+
+                // Image upload handler with CSRF
                 editor.options.set('images_upload_handler', function(blobInfo) {
                     return new Promise(function(resolve, reject) {
                         var formData = new FormData();
@@ -118,9 +128,7 @@
             });
         },
         promotion: false,
-        branding: false,
-        language: 'fr_FR',
-        language_url: 'https://cdn.tiny.cloud/1/2v50jqnfctgrtpybuubv81g67u0vqxfk1v9pvwuqsiv06006/tinymce/6/langs/fr_FR.js'
+        branding: false
     });
 </script>
 @endpush

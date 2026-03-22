@@ -109,6 +109,10 @@
                 <label class="block text-sm text-text-muted mb-1">Twitter/X URL</label>
                 <input type="url" name="social_twitter" value="{{ $settings['social_twitter'] ?? '' }}" class="w-full bg-bg-dark border border-gray-800 rounded-lg px-4 py-3 text-text-main focus:outline-none focus:border-accent transition text-sm">
             </div>
+            <div>
+                <label class="block text-sm text-text-muted mb-1">WhatsApp (numéro avec indicatif, ex: 33612345678)</label>
+                <input type="text" name="social_whatsapp" value="{{ $settings['social_whatsapp'] ?? '' }}" placeholder="33612345678" class="w-full bg-bg-dark border border-gray-800 rounded-lg px-4 py-3 text-text-main focus:outline-none focus:border-accent transition text-sm">
+            </div>
         </div>
 
         {{-- SEO --}}
