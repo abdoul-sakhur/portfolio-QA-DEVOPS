@@ -1,0 +1,10 @@
+# Credentials template - do NOT commit real credentials to version control
+# Fill the fields below with your login information.
+# Recommended: use a password manager or a .env file excluded from git.
+
+ADMIN_USERNAME=
+ADMIN_PASSWORD=
+
+# Notes:
+# - Add this file to .gitignore if you put real credentials here.
+# - Storing plaintext credentials is insecure; proceed with caution.

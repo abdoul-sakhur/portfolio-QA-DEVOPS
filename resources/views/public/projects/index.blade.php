@@ -5,7 +5,8 @@
     <section class="py-20">
         <div class="container mx-auto px-6">
             <x-section-header subtitle="{{ setting('projects_subtitle', 'Mes réalisations en QA & DevOps') }}">
-                {{ setting('projects_page_title', 'Projets') }}
+                {{ setting('pro                php artisan migrate
+                php artisan storage:linkjects_page_title', 'Projets') }}
             </x-section-header>
 
             {{-- Category Filter --}}
