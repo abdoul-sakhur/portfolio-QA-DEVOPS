@@ -19,6 +19,7 @@ use App\Http\Controllers\PublicSite\CertificationController;
 use App\Http\Controllers\PublicSite\ContactController;
 use App\Http\Controllers\PublicSite\HomeController;
 use App\Http\Controllers\PublicSite\ProjectController;
+use App\Http\Controllers\PublicSite\PortfolioController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,6 +32,11 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 Route::get('/projects/{slug}', [ProjectController::class, 'show'])->name('projects.show');
+Route::get('/cv/download', [\App\Http\Controllers\PublicSite\PortfolioController::class, 'downloadCV'])->name('cv.public.download');
+Route::get('/portfolios', [PortfolioController::class, 'index'])->name('portfolios.index');
+Route::get('/portfolios/upload', [PortfolioController::class, 'create'])->middleware('auth')->name('portfolios.create');
+Route::post('/portfolios', [PortfolioController::class, 'store'])->middleware('auth')->name('portfolios.store');
+Route::get('/portfolios/{portfolio}/download', [PortfolioController::class, 'download'])->name('portfolios.download');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('/certifications', [CertificationController::class, 'index'])->name('certifications.index');
@@ -86,6 +92,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('messages', [AdminMessageController::class, 'index'])->name('messages.index');
     Route::get('messages/{message}', [AdminMessageController::class, 'show'])->name('messages.show');
     Route::delete('messages/{message}', [AdminMessageController::class, 'destroy'])->name('messages.destroy');
+    
+    // CV (single)
+    Route::get('cv', [\App\Http\Controllers\Admin\AdminCVController::class, 'index'])->name('cv.index');
+    Route::post('cv', [\App\Http\Controllers\Admin\AdminCVController::class, 'store'])->name('cv.store');
+    Route::get('cv/download/{portfolio}', [\App\Http\Controllers\Admin\AdminCVController::class, 'download'])->name('cv.download');
+    Route::delete('cv/{portfolio}', [\App\Http\Controllers\Admin\AdminCVController::class, 'destroy'])->name('cv.destroy');
 });
 
 Route::middleware('auth')->group(function () {

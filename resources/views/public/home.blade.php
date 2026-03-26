@@ -22,9 +22,15 @@
                         <p class="text-text-main">{{ setting('hero_location', "Côte d'Ivoire") }}</p>
                     </x-terminal-block>
 
-                    <div class="mt-8 flex gap-4">
+                    <div class="mt-8 flex flex-wrap gap-4">
                         <x-btn href="{{ route('projects.index') }}">Voir mes projets</x-btn>
                         <x-btn variant="outline" href="{{ route('contact') }}">Me contacter</x-btn>
+                        @if($cv)
+                            <a href="{{ route('cv.public.download') }}" class="btn-outline flex items-center gap-2 !py-2 !px-4">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                Télécharger mon CV
+                            </a>
+                        @endif
                     </div>
                 </div>
 
