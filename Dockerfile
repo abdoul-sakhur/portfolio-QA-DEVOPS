@@ -1,62 +1,61 @@
-# ── Build stage: install JS deps and compile assets ──
-FROM node:20-alpine AS node-build
+# ── Stage 1: Build frontend assets ──────────────────────────────
+FROM node:18-alpine AS node-builder
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci
-COPY vite.config.js tailwind.config.js postcss.config.js ./
-COPY resources/ resources/
+COPY package.json package-lock.json* ./
+RUN npm ci --silent
+COPY resources resources
+COPY vite.config.js postcss.config.js tailwind.config.js ./
 RUN npm run build
 
-# ── Production image: PHP 8.2 + Nginx in one container ──
-FROM php:8.2-fpm-bookworm
+# ── Stage 2: PHP + Nginx + Supervisor (single container for Render) ─
+FROM php:8.4-fpm
 
-# System deps
+# Install system deps + nginx + supervisor
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    nginx \
-    supervisor \
-    git \
-    unzip \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    libsqlite3-dev \
-    zip \
-    curl \
-    && docker-php-ext-install pdo_mysql pdo_sqlite mbstring exif pcntl bcmath xml gd \
+        git unzip curl \
+        nginx supervisor \
+        libpng-dev libjpeg62-turbo-dev libfreetype6-dev \
+        libonig-dev libxml2-dev libzip-dev libicu-dev \
+        zlib1g-dev libsqlite3-dev \
+    && docker-php-ext-configure gd --with-jpeg --with-freetype \
+    && docker-php-ext-install pdo pdo_mysql pdo_sqlite mbstring exif pcntl bcmath gd zip intl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
-# Copy app source
-COPY . /var/www/html
+# Copy application code
+COPY . .
 
-# Copy built assets from node stage
-COPY --from=node-build /app/public/build /var/www/html/public/build
+# Copy built frontend assets (Vite outputs to public/build)
+COPY --from=node-builder /app/public/build public/build
 
-# Install PHP deps (no dev)
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+# Install PHP deps (production only)
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Nginx config
+# Create SQLite database file
+RUN touch database/database.sqlite
+
+# Nginx config – Render exposes port 10000, local test uses same port
 COPY docker/nginx/render.conf /etc/nginx/sites-available/default
+RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default \
+    && rm -f /etc/nginx/sites-enabled/default.bak
 
-# Supervisor config (runs nginx + php-fpm together)
+# Supervisor config
 COPY docker/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Entrypoint script
+# Directories & permissions
+RUN mkdir -p storage/framework/{sessions,views,cache} \
+             storage/logs storage/app/public \
+             bootstrap/cache /run \
+    && chown -R www-data:www-data storage bootstrap/cache database/database.sqlite
+
+# Entrypoint
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Create SQLite database file
-RUN mkdir -p /var/www/html/database && touch /var/www/html/database/database.sqlite \
-    && chown www-data:www-data /var/www/html/database/database.sqlite
-
-# Render uses $PORT (default 10000)
+# Render free tier requires port 10000
 EXPOSE 10000
 
 ENTRYPOINT ["/entrypoint.sh"]
