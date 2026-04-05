@@ -11,63 +11,35 @@
     @if(setting('seo_og_image'))
         <meta property="og:image" content="{{ asset('storage/' . setting('seo_og_image')) }}">
     @endif
+    <meta property="og:title" content="{{ setting('seo_title', 'Abdoul Sarba — Testeur QA / DevOps') }}">
+    <meta property="og:description" content="{{ setting('seo_description', 'Portfolio de Abdoul Sarba, Testeur Logiciel QA / Testeur Automaticien') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- JSON-LD Structured Data --}}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "{{ setting('hero_name', 'Abdoul-sacourou Sarba') }}",
+        "jobTitle": "{{ setting('hero_title', 'Testeur QA / DevOps Engineer') }}",
+        "url": "{{ url('/') }}",
+        "description": "{{ setting('seo_description', 'Portfolio de Abdoul Sarba, Testeur Logiciel QA / Testeur Automaticien') }}",
+        "knowsAbout": ["QA", "DevOps", "Test Automation", "CI/CD", "Selenium", "Cypress"],
+        "sameAs": [
+            "{{ setting('social_linkedin', '') }}",
+            "{{ setting('social_github', '') }}"
+        ]
+    }
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'bg-dark': '#020c1b',
-                        'primary': '#0a192f',
-                        'accent': '#64ffda',
-                        'text-main': '#ccd6f6',
-                        'text-muted': '#8892b0',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['Fira Code', 'monospace'],
-                    },
-                },
-            },
-        }
-    </script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <style>
-        :root {
-            --color-bg: #020c1b;
-            --color-primary: #0a192f;
-            --color-accent: #64ffda;
-            --color-text: #ccd6f6;
-            --color-text-muted: #8892b0;
-            --border-radius: 8px;
-            --transition: all 0.3s ease;
-        }
-        body { background-color: var(--color-bg); color: var(--color-text); font-family: 'Inter', sans-serif; }
-        .font-mono { font-family: 'Fira Code', monospace; }
-        .card-hover { transition: var(--transition); border: 1px solid transparent; }
-        .card-hover:hover { transform: translateY(-5px); border-color: var(--color-accent); }
-        .btn-primary { background-color: var(--color-accent); color: var(--color-primary); font-weight: 600; padding: 0.75rem 1.5rem; border-radius: var(--border-radius); transition: var(--transition); display: inline-block; }
-        .btn-primary:hover { box-shadow: 0 0 20px rgba(100, 255, 218, 0.3); }
-        .btn-outline { border: 1px solid var(--color-accent); color: var(--color-accent); padding: 0.75rem 1.5rem; border-radius: var(--border-radius); transition: var(--transition); display: inline-block; }
-        .btn-outline:hover { background-color: rgba(100, 255, 218, 0.1); }
-        .section-title { position: relative; display: inline-block; }
-        .section-title::after { content: ''; display: block; width: 100px; height: 2px; background-color: var(--color-accent); margin-top: 0.5rem; }
-        .terminal-block { background-color: var(--color-primary); border-radius: var(--border-radius); font-family: 'Fira Code', monospace; overflow: hidden; }
-        .terminal-dots span { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
-        .glass-header { backdrop-filter: blur(10px); background-color: rgba(2, 12, 27, 0.85); }
-        .skill-bar { background-color: var(--color-primary); border-radius: 4px; overflow: hidden; }
-        .skill-bar-fill { background: linear-gradient(90deg, var(--color-accent), #0aff9d); height: 8px; border-radius: 4px; transition: width 1s ease; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--color-bg); }
-        ::-webkit-scrollbar-thumb { background: var(--color-text-muted); border-radius: 4px; }
-    </style>
     @stack('styles')
 </head>
 <body class="min-h-screen antialiased">
@@ -79,9 +51,16 @@
                     &lt;{{ setting('hero_title', 'Abdoul Sarba') }} /&gt;
                 </a>
                 <nav class="hidden md:flex items-center space-x-6 text-sm">
+                    @if(setting('contact_status') === 'Disponible')
+                        <span class="flex items-center gap-1.5 text-green-400 text-xs font-mono border border-green-400/30 rounded-full px-3 py-1">
+                            <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                            Disponible
+                        </span>
+                    @endif
                     <a href="{{ route('home') }}" class="text-text-muted hover:text-accent transition">Accueil</a>
                     <a href="{{ route('about') }}" class="text-text-muted hover:text-accent transition">À propos</a>
                     <a href="{{ route('projects.index') }}" class="text-text-muted hover:text-accent transition">Projets</a>
+                    <a href="{{ route('services.index') }}" class="text-text-muted hover:text-accent transition">Services</a>
                     <a href="{{ route('blog.index') }}" class="text-text-muted hover:text-accent transition">Blog</a>
                     <a href="{{ route('certifications.index') }}" class="text-text-muted hover:text-accent transition">Certifications</a>
                     <a href="{{ route('contact') }}" class="btn-primary text-sm !py-2 !px-4">Contact</a>
@@ -97,6 +76,7 @@
                 <a href="{{ route('home') }}" class="block text-text-muted hover:text-accent py-1">Accueil</a>
                 <a href="{{ route('about') }}" class="block text-text-muted hover:text-accent py-1">À propos</a>
                 <a href="{{ route('projects.index') }}" class="block text-text-muted hover:text-accent py-1">Projets</a>
+                <a href="{{ route('services.index') }}" class="block text-text-muted hover:text-accent py-1">Services</a>
                 <a href="{{ route('blog.index') }}" class="block text-text-muted hover:text-accent py-1">Blog</a>
                 <a href="{{ route('certifications.index') }}" class="block text-text-muted hover:text-accent py-1">Certifications</a>
                 <a href="{{ route('contact') }}" class="block text-text-muted hover:text-accent py-1">Contact</a>
@@ -107,6 +87,20 @@
     <main class="pt-16">
         @yield('content')
     </main>
+
+    {{-- CTA Banner --}}
+    <section class="py-16 bg-primary/50 border-t border-gray-800">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h3 class="text-2xl md:text-3xl font-bold text-text-main mb-4">Un projet en tête ?</h3>
+            <p class="text-text-muted mb-8 max-w-xl mx-auto">Besoin d'un QA Engineer ou DevOps pour votre projet ? Discutons de vos besoins et trouvons la meilleure solution ensemble.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="https://wa.me/{{ setting('social_whatsapp') }}?text={{ urlencode('Bonjour, je souhaite discuter d\'un projet.') }}" target="_blank" rel="noopener" class="btn-primary">Discutons de votre projet</a>
+                @if(setting('social_linkedin'))
+                    <a href="{{ setting('social_linkedin') }}" target="_blank" rel="noopener" class="btn-outline">Me suivre sur LinkedIn</a>
+                @endif
+            </div>
+        </div>
+    </section>
 
     <footer class="border-t border-gray-800 py-8 mt-20">
         <div class="max-w-6xl mx-auto px-4 text-center text-text-muted text-sm">

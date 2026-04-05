@@ -10,30 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'bg-dark': '#020c1b',
-                        'primary': '#0a192f',
-                        'accent': '#64ffda',
-                        'text-main': '#ccd6f6',
-                        'text-muted': '#8892b0',
-                    },
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                },
-            },
-        }
-    </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <style>
-        body { background-color: #020c1b; color: #ccd6f6; font-family: 'Inter', sans-serif; }
-        .sidebar-link { transition: all 0.2s; padding: 0.5rem 1rem; border-radius: 6px; display: flex; align-items: center; gap: 0.5rem; color: #8892b0; font-size: 0.875rem; }
-        .sidebar-link:hover, .sidebar-link.active { background-color: rgba(100,255,218,0.1); color: #64ffda; }
-    </style>
     @stack('styles')
 </head>
 <body class="min-h-screen" x-data="{ sidebarOpen: true }">
@@ -73,6 +51,14 @@
                 </a>
                 <a href="{{ route('admin.certifications.categories.index') }}" class="sidebar-link pl-8 {{ request()->routeIs('admin.certifications.categories.*') ? 'active' : '' }}">Catégories certifs</a>
 
+                <a href="{{ route('admin.services.index') }}" class="sidebar-link {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    Services
+                </a>
+                <a href=\"{{ route('admin.testimonials.index') }}\" class=\"sidebar-link {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}\">
+                    <svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z\"/></svg>
+                    Témoignages
+                </a>
                 <a href="{{ route('admin.skills.index') }}" class="sidebar-link {{ request()->routeIs('admin.skills.*') ? 'active' : '' }}">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                     Compétences

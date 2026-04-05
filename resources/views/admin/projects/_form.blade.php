@@ -52,6 +52,45 @@
         <input type="file" name="cover_image" accept="image/*" class="text-sm text-text-muted">
         @error('cover_image') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
     </div>
+    {{-- Case Study Fields --}}
+    <div class="border-t border-gray-800 pt-5 mt-5">
+        <h3 class="text-accent text-sm font-semibold mb-4">Étude de cas (optionnel)</h3>
+        <div class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm text-text-muted mb-1">Client</label>
+                    <input type="text" name="client" value="{{ old('client', $p?->client) }}"
+                           class="w-full bg-bg-dark border border-gray-800 rounded-lg px-4 py-3 text-text-main focus:outline-none focus:border-accent transition text-sm">
+                    @error('client') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+                <div>
+                    <label class="block text-sm text-text-muted mb-1">Durée de la mission</label>
+                    <input type="text" name="mission_duration" value="{{ old('mission_duration', $p?->mission_duration) }}" placeholder="ex: 3 mois"
+                           class="w-full bg-bg-dark border border-gray-800 rounded-lg px-4 py-3 text-text-main focus:outline-none focus:border-accent transition text-sm">
+                    @error('mission_duration') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm text-text-muted mb-1">Problématique / Challenge</label>
+                <textarea name="challenge" rows="3"
+                          class="w-full bg-bg-dark border border-gray-800 rounded-lg px-4 py-3 text-text-main focus:outline-none focus:border-accent transition text-sm resize-none">{{ old('challenge', $p?->challenge) }}</textarea>
+                @error('challenge') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label class="block text-sm text-text-muted mb-1">Solution apportée</label>
+                <textarea name="solution" rows="3"
+                          class="w-full bg-bg-dark border border-gray-800 rounded-lg px-4 py-3 text-text-main focus:outline-none focus:border-accent transition text-sm resize-none">{{ old('solution', $p?->solution) }}</textarea>
+                @error('solution') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label class="block text-sm text-text-muted mb-1">Résultats obtenus</label>
+                <textarea name="results" rows="3"
+                          class="w-full bg-bg-dark border border-gray-800 rounded-lg px-4 py-3 text-text-main focus:outline-none focus:border-accent transition text-sm resize-none">{{ old('results', $p?->results) }}</textarea>
+                @error('results') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+        </div>
+    </div>
+
     <label class="flex items-center gap-2 cursor-pointer">
         <input type="hidden" name="is_featured" value="0">
         <input type="checkbox" name="is_featured" value="1" {{ old('is_featured', $p?->is_featured) ? 'checked' : '' }}

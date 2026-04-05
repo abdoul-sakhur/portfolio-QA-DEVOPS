@@ -11,8 +11,16 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                'bg-dark': '#020c1b',
+                'primary': '#0a192f',
+                'accent': '#64ffda',
+                'text-main': '#ccd6f6',
+                'text-muted': '#8892b0',
+            },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Inter', ...defaultTheme.fontFamily.sans],
+                mono: ['Fira Code', ...defaultTheme.fontFamily.mono],
             },
         },
     },

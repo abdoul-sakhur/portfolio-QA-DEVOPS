@@ -38,6 +38,11 @@ class AdminProjectController extends Controller
             'is_featured' => 'boolean',
             'order' => 'integer',
             'cover_image' => 'nullable|image|max:2048',
+            'client' => 'nullable|string|max:255',
+            'challenge' => 'nullable|string',
+            'solution' => 'nullable|string',
+            'results' => 'nullable|string',
+            'mission_duration' => 'nullable|string|max:100',
         ]);
 
         $validated['slug'] = Str::slug($validated['title']);
@@ -69,6 +74,11 @@ class AdminProjectController extends Controller
             'is_featured' => 'boolean',
             'order' => 'integer',
             'cover_image' => 'nullable|image|max:2048',
+            'client' => 'nullable|string|max:255',
+            'challenge' => 'nullable|string',
+            'solution' => 'nullable|string',
+            'results' => 'nullable|string',
+            'mission_duration' => 'nullable|string|max:100',
         ]);
 
         $validated['slug'] = Str::slug($validated['title']);

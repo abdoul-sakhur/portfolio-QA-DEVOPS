@@ -8,6 +8,11 @@ if [ ! -f .env ]; then
     cp .env.example .env 2>/dev/null || touch .env
 fi
 
+# ── Dynamic port (Railway sets $PORT automatically) ───────────
+PORT="${PORT:-10000}"
+sed -i "s/listen [0-9]*/listen ${PORT}/" /etc/nginx/sites-available/default
+echo "Nginx listening on port ${PORT}"
+
 # ── PHP-FPM socket config ─────────────────────────────────────
 mkdir -p /run
 cat > /usr/local/etc/php-fpm.d/zz-render.conf <<'EOF'

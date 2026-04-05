@@ -49,6 +49,22 @@
         </div>
     </section>
 
+    {{-- Key Figures --}}
+    <section class="py-16 border-y border-gray-800/50" x-data="{ shown: false }" x-intersect.once="shown = true">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto text-center">
+                @foreach($stats as $stat)
+                    <div x-data="{ count: 0, target: {{ $stat['value'] }} }" x-init="$watch('shown', val => { if (val) { let step = Math.ceil(target / 40); let interval = setInterval(() => { count += step; if (count >= target) { count = target; clearInterval(interval); } }, 30); } })">
+                        <p class="text-3xl md:text-4xl font-bold text-accent font-mono">
+                            <span x-text="count">0</span>{{ $stat['suffix'] }}
+                        </p>
+                        <p class="text-text-muted text-sm mt-2">{{ $stat['label'] }}</p>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
     {{-- Skills --}}
     @if($skills->count())
     <section class="py-20 bg-primary/50">
@@ -118,6 +134,47 @@
 
             <div class="text-center mt-10">
                 <x-btn variant="outline" href="{{ route('projects.index') }}">Voir tous les projets</x-btn>
+            </div>
+        </div>
+    </section>
+    @endif
+
+    {{-- Testimonials --}}
+    @if($testimonials->count())
+    <section class="py-20">
+        <div class="container mx-auto px-6">
+            <x-section-header subtitle="Ce que disent mes clients">
+                Témoignages
+            </x-section-header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                @foreach($testimonials as $testimonial)
+                    <x-card class="flex flex-col">
+                        <div class="flex items-center gap-3 mb-4">
+                            @if($testimonial->client_photo)
+                                <img src="{{ Storage::url($testimonial->client_photo) }}" alt="{{ $testimonial->client_name }}" class="w-12 h-12 rounded-full object-cover border-2 border-accent/30">
+                            @else
+                                <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent font-bold text-lg">
+                                    {{ strtoupper(substr($testimonial->client_name, 0, 1)) }}
+                                </div>
+                            @endif
+                            <div>
+                                <h4 class="font-semibold text-text-main text-sm">{{ $testimonial->client_name }}</h4>
+                                @if($testimonial->client_role || $testimonial->client_company)
+                                    <p class="text-xs text-text-muted">
+                                        {{ $testimonial->client_role }}{{ $testimonial->client_role && $testimonial->client_company ? ' — ' : '' }}{{ $testimonial->client_company }}
+                                    </p>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            @for($i = 1; $i <= 5; $i++)
+                                <span class="text-sm {{ $i <= $testimonial->rating ? 'text-yellow-400' : 'text-gray-700' }}">★</span>
+                            @endfor
+                        </div>
+                        <p class="text-text-muted text-sm italic flex-1 leading-relaxed">"{{ $testimonial->content }}"</p>
+                    </x-card>
+                @endforeach
             </div>
         </div>
     </section>

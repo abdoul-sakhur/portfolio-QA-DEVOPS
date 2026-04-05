@@ -12,6 +12,8 @@ use App\Models\Project;
 use App\Models\ProjectCategory;
 use App\Models\Setting;
 use App\Models\Skill;
+use App\Models\Service;
+use App\Models\Testimonial;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -21,12 +23,14 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // ── Admin User ──────────────────────────────────────────
-        User::create([
-            'name'     => 'Abdoul Sarba',
-            'email'    => 'admin@portfolio.test',
-            'password' => Hash::make('password'),
-            'role'     => 'admin',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'admin@portfolio.test'],
+            [
+                'name'     => 'Abdoul Sarba',
+                'password' => Hash::make('password'),
+                'role'     => 'admin',
+            ]
+        );
 
         // ── Settings ────────────────────────────────────────────
         $settings = [
@@ -233,6 +237,92 @@ class DatabaseSeeder extends Seeder
             'issuer'      => 'Scrum.org',
             'issue_date'  => '2023-03-10',
             'category_id' => $ccAgile->id,
+        ]);
+
+        // ── Services ────────────────────────────────────────────
+        Service::create([
+            'title'             => 'Audit QA & Stratégie de Tests',
+            'slug'              => 'audit-qa-strategie-tests',
+            'short_description' => 'Analyse de votre processus de test existant, identification des axes d\'amélioration et mise en place d\'une stratégie de tests adaptée à votre contexte.',
+            'description'       => "Revue complète de vos pratiques de test actuelles.\nÉvaluation de la couverture de tests.\nRecommandations priorisées avec plan d\'action.\nAccompagnement à la mise en œuvre.",
+            'price_label'       => 'À partir de 800€',
+            'duration'          => '1-2 semaines',
+            'is_featured'       => true,
+            'order'             => 1,
+        ]);
+
+        Service::create([
+            'title'             => 'Automatisation des Tests',
+            'slug'              => 'automatisation-tests',
+            'short_description' => 'Mise en place de frameworks d\'automatisation (Selenium, Cypress, Playwright) pour vos tests fonctionnels, E2E et API.',
+            'description'       => "Choix du framework adapté à votre stack.\nÉcriture des scénarios de tests automatisés.\nIntégration dans votre pipeline CI/CD.\nFormation de votre équipe à la maintenance des tests.",
+            'price_label'       => 'Sur devis',
+            'duration'          => '2-6 semaines',
+            'is_featured'       => true,
+            'order'             => 2,
+        ]);
+
+        Service::create([
+            'title'             => 'Mise en place CI/CD',
+            'slug'              => 'mise-en-place-cicd',
+            'short_description' => 'Conception et déploiement de pipelines CI/CD avec Jenkins, GitLab CI ou GitHub Actions. Docker & Kubernetes inclus.',
+            'description'       => "Architecture du pipeline adaptée à vos besoins.\nContainerisation avec Docker.\nDéploiement automatisé multi-environnements.\nMonitoring et alerting.",
+            'price_label'       => 'Sur devis',
+            'duration'          => '2-4 semaines',
+            'is_featured'       => false,
+            'order'             => 3,
+        ]);
+
+        Service::create([
+            'title'             => 'Tests de Performance',
+            'slug'              => 'tests-performance',
+            'short_description' => 'Campagnes de tests de charge et de performance avec JMeter ou k6. Identification des goulots d\'étranglement.',
+            'description'       => "Définition des scénarios de charge.\nExécution des tests et analyse des résultats.\nRapport détaillé avec recommandations.\nRetest après optimisations.",
+            'price_label'       => 'À partir de 600€',
+            'duration'          => '1-2 semaines',
+            'is_featured'       => false,
+            'order'             => 4,
+        ]);
+
+        Service::create([
+            'title'             => 'Formation & Coaching QA',
+            'slug'              => 'formation-coaching-qa',
+            'short_description' => 'Formation sur mesure pour vos équipes : bonnes pratiques de test, automatisation, outils CI/CD, méthodologies agiles.',
+            'price_label'       => 'À partir de 500€/jour',
+            'duration'          => '1-5 jours',
+            'is_featured'       => false,
+            'order'             => 5,
+        ]);
+
+        // ── Testimonials ────────────────────────────────────────
+        Testimonial::create([
+            'client_name'    => 'Sophie Martin',
+            'client_company' => 'FinTech Solutions',
+            'client_role'    => 'CTO',
+            'content'        => 'Abdoul a mis en place notre stratégie de tests automatisés en un temps record. La couverture de tests est passée de 20% à 85%. Un vrai professionnel.',
+            'rating'         => 5,
+            'is_published'   => true,
+            'order'          => 1,
+        ]);
+
+        Testimonial::create([
+            'client_name'    => 'Marc Dubois',
+            'client_company' => 'E-Commerce Plus',
+            'client_role'    => 'Lead Developer',
+            'content'        => 'La mise en place du pipeline CI/CD a transformé notre workflow. Les déploiements qui prenaient des heures se font maintenant en quelques minutes.',
+            'rating'         => 5,
+            'is_published'   => true,
+            'order'          => 2,
+        ]);
+
+        Testimonial::create([
+            'client_name'    => 'Amina Koné',
+            'client_company' => 'HealthApp',
+            'client_role'    => 'Product Owner',
+            'content'        => 'Son audit QA nous a permis d\'identifier et corriger des problèmes critiques avant la mise en production. Je recommande vivement.',
+            'rating'         => 5,
+            'is_published'   => true,
+            'order'          => 3,
         ]);
     }
 }

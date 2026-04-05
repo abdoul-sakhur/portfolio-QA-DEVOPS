@@ -9,8 +9,10 @@ use App\Http\Controllers\Admin\AdminExperienceController;
 use App\Http\Controllers\Admin\AdminMessageController;
 use App\Http\Controllers\Admin\AdminProjectCategoryController;
 use App\Http\Controllers\Admin\AdminProjectController;
+use App\Http\Controllers\Admin\AdminServiceController;
 use App\Http\Controllers\Admin\AdminSettingController;
 use App\Http\Controllers\Admin\AdminSkillController;
+use App\Http\Controllers\Admin\AdminTestimonialController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicSite\AboutController;
@@ -20,6 +22,8 @@ use App\Http\Controllers\PublicSite\ContactController;
 use App\Http\Controllers\PublicSite\HomeController;
 use App\Http\Controllers\PublicSite\ProjectController;
 use App\Http\Controllers\PublicSite\PortfolioController;
+use App\Http\Controllers\PublicSite\ServiceController;
+use App\Http\Controllers\PublicSite\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,9 +43,11 @@ Route::post('/portfolios', [PortfolioController::class, 'store'])->middleware('a
 Route::get('/portfolios/{portfolio}/download', [PortfolioController::class, 'download'])->name('portfolios.download');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/certifications', [CertificationController::class, 'index'])->name('certifications.index');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +79,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('certifications/categories', [AdminCertificationCategoryController::class, 'store'])->name('certifications.categories.store');
     Route::put('certifications/categories/{category}', [AdminCertificationCategoryController::class, 'update'])->name('certifications.categories.update');
     Route::delete('certifications/categories/{category}', [AdminCertificationCategoryController::class, 'destroy'])->name('certifications.categories.destroy');
+
+    // Services
+    Route::resource('services', AdminServiceController::class)->except('show');
+
+    // Testimonials
+    Route::resource('testimonials', AdminTestimonialController::class)->except('show');
 
     // Skills
     Route::resource('skills', AdminSkillController::class)->except('show');
