@@ -31,6 +31,13 @@ COPY . .
 # Copy built frontend assets (Vite outputs to public/build)
 COPY --from=node-builder /app/public/build public/build
 
+# Verify build assets exist (fail fast if Vite build produced nothing)
+RUN echo "=== Vite build assets ===" \
+    && ls -la public/build/ \
+    && ls -la public/build/assets/ \
+    && cat public/build/manifest.json \
+    && chmod -R 755 public/build
+
 # Install PHP deps (production only)
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 

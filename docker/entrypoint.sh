@@ -45,5 +45,14 @@ php artisan view:cache
 
 # ── Fix permissions ──────────────────────────────────────────
 chown -R www-data:www-data storage bootstrap/cache
+chmod -R 755 public/build 2>/dev/null || true
+
+# ── Debug: verify build assets at runtime ────────────────────
+echo "=== Runtime: Checking public/build ==="
+ls -la public/build/ 2>/dev/null || echo "WARNING: public/build/ NOT FOUND"
+ls -la public/build/assets/ 2>/dev/null || echo "WARNING: public/build/assets/ NOT FOUND"
+cat public/build/manifest.json 2>/dev/null || echo "WARNING: manifest.json NOT FOUND"
+echo "=== Nginx root contents ==="
+ls -la public/ | head -20
 
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
