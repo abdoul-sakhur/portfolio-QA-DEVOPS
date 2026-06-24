@@ -5,17 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ setting('seo_title', 'Abdoul Sarba — Testeur QA / DevOps') }}</title>
-    <meta name="description" content="{{ setting('seo_description', 'Portfolio de Abdoul Sarba, Testeur Logiciel QA / Testeur Automaticien') }}">
+    @php
+        $metaTitle       = trim($__env->yieldContent('title'));
+        $metaDescription = trim($__env->yieldContent('seo_description'));
+        $pageTitle       = $metaTitle ? $metaTitle . ' — ' . setting('hero_name', 'Abdoul Sarba') : setting('seo_title', 'Abdoul Sarba — Testeur QA / DevOps');
+        $pageDescription = $metaDescription ?: setting('seo_description', 'Portfolio de Abdoul Sarba, Testeur Logiciel QA / Testeur Automaticien');
+    @endphp
+    <title>{{ $pageTitle }}</title>
+    <meta name="description" content="{{ $pageDescription }}">
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    <meta property="og:title" content="{{ $metaTitle ?: setting('seo_title', 'Abdoul Sarba — Testeur QA / DevOps') }}">
+    <meta property="og:description" content="{{ $pageDescription }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
     @if(setting('seo_og_image'))
         <meta property="og:image" content="{{ asset('storage/' . setting('seo_og_image')) }}">
     @endif
-    <meta property="og:title" content="{{ setting('seo_title', 'Abdoul Sarba — Testeur QA / DevOps') }}">
-    <meta property="og:description" content="{{ setting('seo_description', 'Portfolio de Abdoul Sarba, Testeur Logiciel QA / Testeur Automaticien') }}">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ url()->current() }}">
     <link rel="canonical" href="{{ url()->current() }}">
+    <link rel="alternate" type="application/rss+xml" title="{{ setting('hero_name', 'Abdoul Sarba') }} — Blog RSS" href="{{ route('blog.rss') }}">
+    @stack('meta')
 
     {{-- JSON-LD Structured Data --}}
     <script type="application/ld+json">
@@ -102,20 +110,59 @@
         </div>
     </section>
 
-    <footer class="border-t border-gray-800 py-8 mt-20">
-        <div class="max-w-6xl mx-auto px-4 text-center text-text-muted text-sm">
-            <div class="flex justify-center space-x-6 mb-4">
-                @if(setting('social_github'))
-                    <a href="{{ setting('social_github') }}" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition">GitHub</a>
-                @endif
-                @if(setting('social_linkedin'))
-                    <a href="{{ setting('social_linkedin') }}" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition">LinkedIn</a>
-                @endif
-                @if(setting('social_twitter'))
-                    <a href="{{ setting('social_twitter') }}" target="_blank" rel="noopener noreferrer" class="hover:text-accent transition">Twitter</a>
-                @endif
+    <footer class="border-t border-gray-800 py-12 mt-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+
+                {{-- Identité --}}
+                <div>
+                    <a href="{{ route('home') }}" class="text-accent font-mono font-bold text-lg">&lt;{{ setting('hero_name', 'Abdoul Sarba') }} /&gt;</a>
+                    <p class="text-text-muted text-sm mt-2 leading-relaxed">{{ setting('hero_title', 'Testeur QA / DevOps Engineer') }}</p>
+                    @if(setting('contact_status') === 'Disponible')
+                        <span class="inline-flex items-center gap-1.5 text-green-400 text-xs font-mono mt-3">
+                            <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
+                            Disponible pour une mission
+                        </span>
+                    @endif
+                </div>
+
+                {{-- Navigation --}}
+                <div>
+                    <p class="text-accent font-mono text-xs tracking-widest uppercase mb-4">// Navigation</p>
+                    <nav class="space-y-2">
+                        @foreach([['home', 'Accueil'], ['about', 'À propos'], ['projects.index', 'Projets'], ['services.index', 'Services'], ['blog.index', 'Blog'], ['certifications.index', 'Certifications'], ['contact', 'Contact']] as [$route, $label])
+                            <a href="{{ route($route) }}" class="block text-text-muted text-sm hover:text-accent transition font-mono">
+                                <span class="text-accent/40">›</span> {{ $label }}
+                            </a>
+                        @endforeach
+                    </nav>
+                </div>
+
+                {{-- Terminal prompt --}}
+                <div>
+                    <x-terminal-block title="~/contact">
+                        <p><span class="text-green-400">$</span> <span class="text-text-muted">echo $AVAILABILITY</span></p>
+                        <p class="text-accent mt-1">{{ setting('contact_status', 'Disponible') }}</p>
+                        <p class="mt-2"><span class="text-green-400">$</span> <span class="text-text-muted">cat links.txt</span></p>
+                        <div class="mt-1 space-y-1">
+                            @if(setting('social_github'))
+                                <a href="{{ setting('social_github') }}" target="_blank" rel="noopener" class="block text-text-muted hover:text-accent transition text-xs">→ GitHub</a>
+                            @endif
+                            @if(setting('social_linkedin'))
+                                <a href="{{ setting('social_linkedin') }}" target="_blank" rel="noopener" class="block text-text-muted hover:text-accent transition text-xs">→ LinkedIn</a>
+                            @endif
+                            @if(setting('social_twitter'))
+                                <a href="{{ setting('social_twitter') }}" target="_blank" rel="noopener" class="block text-text-muted hover:text-accent transition text-xs">→ Twitter</a>
+                            @endif
+                        </div>
+                    </x-terminal-block>
+                </div>
             </div>
-            <p>&copy; {{ date('Y') }} {{ setting('hero_name', 'Abdoul Sarba') }}. Tous droits réservés.</p>
+
+            <div class="border-t border-gray-800/50 pt-6 flex flex-col md:flex-row justify-between items-center gap-2">
+                <p class="text-text-muted text-xs font-mono">&copy; {{ date('Y') }} {{ setting('hero_name', 'Abdoul Sarba') }}. Tous droits réservés.</p>
+                <p class="text-text-muted text-xs font-mono">Conçu avec <span class="text-accent">❤</span> en Laravel + Tailwind</p>
+            </div>
         </div>
     </footer>
 

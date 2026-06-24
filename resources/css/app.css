@@ -114,6 +114,135 @@ body {
     color: #64ffda;
 }
 
+/* Blog content */
+.blog-content h2 { font-size: 1.5em; font-weight: 700; margin: 1.5em 0 0.5em; color: #e2e8f0; }
+.blog-content h3 { font-size: 1.25em; font-weight: 600; margin: 1.2em 0 0.5em; color: #e2e8f0; }
+.blog-content h4 { font-size: 1.1em; font-weight: 600; margin: 1em 0 0.5em; color: #e2e8f0; }
+.blog-content p { margin-bottom: 1em; }
+.blog-content a { color: #64ffda; text-decoration: underline; text-underline-offset: 2px; }
+.blog-content a:hover { opacity: 0.8; }
+.blog-content strong { color: #ccd6f6; font-weight: 600; }
+.blog-content em { font-style: italic; }
+.blog-content ul, .blog-content ol { margin: 1em 0; padding-left: 1.5em; }
+.blog-content ul { list-style-type: disc; }
+.blog-content ol { list-style-type: decimal; }
+.blog-content li { margin-bottom: 0.4em; }
+.blog-content blockquote {
+    border-left: 3px solid #64ffda;
+    padding: 0.5em 1em;
+    margin: 1.5em 0;
+    color: #8892b0;
+    font-style: italic;
+    background: rgba(10, 25, 47, 0.5);
+    border-radius: 0 8px 8px 0;
+}
+
+/* Images centrées */
+.blog-content img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 2em auto;
+    border: 1px solid #1e293b;
+}
+
+/* Blocs de code */
+.blog-content .code-block {
+    margin: 1.5em 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #1e2d45;
+}
+.blog-content .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #0d1f33;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #1e2d45;
+}
+.blog-content .code-lang {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.7rem;
+    color: #64ffda;
+    text-transform: lowercase;
+    letter-spacing: 0.05em;
+}
+.blog-content pre {
+    background: #020c1b;
+    padding: 1.25em 1.5em;
+    overflow-x: auto;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+}
+.blog-content pre code.hljs {
+    background: transparent;
+    padding: 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.875em;
+    line-height: 1.7;
+}
+.blog-content code {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.875em;
+}
+.blog-content :not(pre) > code {
+    background: #0a192f;
+    padding: 0.15em 0.5em;
+    border-radius: 4px;
+    color: #64ffda;
+    border: 1px solid #1e2d45;
+}
+
+/* Couleurs hljs — thème personnalisé aligné sur la charte */
+.hljs { color: #ccd6f6; }
+.hljs-keyword, .hljs-operator { color: #c792ea; }
+.hljs-function, .hljs-title { color: #82aaff; }
+.hljs-string, .hljs-attr { color: #c3e88d; }
+.hljs-number, .hljs-literal { color: #f78c6c; }
+.hljs-comment { color: #546e7a; font-style: italic; }
+.hljs-variable, .hljs-params { color: #ccd6f6; }
+.hljs-built_in, .hljs-class { color: #ffcb6b; }
+.hljs-property { color: #64ffda; }
+.hljs-punctuation { color: #89ddff; }
+
+.blog-content table { width: 100%; border-collapse: collapse; margin: 1.5em 0; }
+.blog-content table th { background: #0a192f; font-weight: 600; color: #ccd6f6; text-align: left; }
+.blog-content table td, .blog-content table th { border: 1px solid #1e293b; padding: 0.6em 1em; }
+.blog-content table tr:hover td { background: rgba(10, 25, 47, 0.3); }
+.blog-content hr { border: 0; border-top: 1px solid #1e293b; margin: 2em 0; }
+
+/* Bouton copie */
+.copy-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    border: 1px solid #1e2d45;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #546e7a;
+    flex-shrink: 0;
+}
+.copy-btn:hover { border-color: #64ffda; color: #64ffda; background: rgba(100,255,218,0.05); }
+.copy-btn.copied { border-color: #64ffda; color: #64ffda; }
+
+/* Scroll reveal */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;

@@ -2,7 +2,7 @@
 @section('title', 'Services & Prestations')
 
 @section('content')
-    <section class="py-20">
+    <section class="py-20 reveal" x-data x-intersect.once="$el.classList.add('is-visible')">
         <div class="container mx-auto px-6">
             <x-section-header subtitle="Ce que je peux faire pour vous">
                 Services & Prestations
@@ -65,7 +65,11 @@
                 @endforeach
             </div>
             @else
-                <p class="text-center text-text-muted">Les services seront bientôt disponibles.</p>
+                <x-terminal-block title="~/services" class="max-w-md mx-auto">
+                    <p><span class="text-green-400">$</span> <span class="text-text-muted">cat services.json</span></p>
+                    <p class="text-yellow-400 mt-2">// Services en cours de configuration.</p>
+                    <p class="text-text-muted mt-1"><span class="text-green-400">$</span> <span class="animate-pulse">▊</span></p>
+                </x-terminal-block>
             @endif
 
             {{-- CTA --}}

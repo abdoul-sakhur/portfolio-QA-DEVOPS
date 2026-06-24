@@ -23,6 +23,7 @@ use App\Http\Controllers\PublicSite\HomeController;
 use App\Http\Controllers\PublicSite\ProjectController;
 use App\Http\Controllers\PublicSite\PortfolioController;
 use App\Http\Controllers\PublicSite\ServiceController;
+use App\Http\Controllers\PublicSite\RssController;
 use App\Http\Controllers\PublicSite\SitemapController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,7 @@ Route::get('/portfolios/upload', [PortfolioController::class, 'create'])->middle
 Route::post('/portfolios', [PortfolioController::class, 'store'])->middleware('auth')->name('portfolios.store');
 Route::get('/portfolios/{portfolio}/download', [PortfolioController::class, 'download'])->name('portfolios.download');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/rss.xml', [RssController::class, 'index'])->name('blog.rss');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
 Route::get('/certifications', [CertificationController::class, 'index'])->name('certifications.index');

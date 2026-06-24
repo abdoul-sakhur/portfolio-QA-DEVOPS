@@ -2,7 +2,7 @@
 @section('title', 'Projets')
 
 @section('content')
-    <section class="py-20">
+    <section class="py-20 reveal" x-data x-intersect.once="$el.classList.add('is-visible')">
         <div class="container mx-auto px-6">
             <x-section-header subtitle="{{ setting('projects_subtitle', 'Mes réalisations en QA & DevOps') }}">
                 {{ setting('pro                php artisan migrate
@@ -31,7 +31,7 @@
                 @foreach($projects as $project)
                     <x-card class="flex flex-col">
                         @if($project->image)
-                            <img src="{{ Storage::url($project->image) }}" alt="{{ $project->title }}" class="w-full h-48 object-cover rounded-lg mb-4">
+                            <img src="{{ Storage::url($project->image) }}" alt="{{ $project->title }}" loading="lazy" class="w-full h-48 object-cover rounded-lg mb-4">
                         @endif
                         @if($project->category)
                             <span class="text-accent text-xs font-mono mb-2">{{ $project->category->name }}</span>
@@ -60,7 +60,12 @@
 
             <div class="mt-10">{{ $projects->withQueryString()->links() }}</div>
             @else
-                <p class="text-center text-text-muted">Aucun projet pour le moment.</p>
+                <x-terminal-block title="~/projects" class="max-w-md mx-auto">
+                    <p><span class="text-green-400">$</span> <span class="text-text-muted">ls projects/</span></p>
+                    <p class="text-text-muted mt-2">total 0</p>
+                    <p class="text-yellow-400 mt-1">// Aucun projet disponible pour le moment.</p>
+                    <p class="text-text-muted mt-2"><span class="text-green-400">$</span> <span class="animate-pulse">▊</span></p>
+                </x-terminal-block>
             @endif
         </div>
     </section>

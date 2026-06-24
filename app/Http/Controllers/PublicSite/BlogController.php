@@ -26,6 +26,14 @@ class BlogController extends Controller
     {
         $post = BlogPost::where('slug', $slug)->published()->with('category')->firstOrFail();
 
-        return view('public.blog.show', compact('post'));
+        $related = BlogPost::published()
+            ->with('category')
+            ->where('id', '!=', $post->id)
+            ->when($post->category_id, fn ($q) => $q->where('category_id', $post->category_id))
+            ->latest('published_at')
+            ->take(3)
+            ->get();
+
+        return view('public.blog.show', compact('post', 'related'));
     }
 }

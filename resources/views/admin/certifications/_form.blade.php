@@ -44,9 +44,9 @@
         @error('category_id') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror
     </div>
     <div>
-        <label class="block text-sm text-text-muted mb-1">Image du badge</label>
+        <label class="block text-sm text-text-muted mb-1">Image de la certification <span class="text-xs text-gray-600">(affichée en lightbox sur le site)</span></label>
         @if($c?->cover_image)
-            <img src="{{ Storage::url($c->cover_image) }}" class="w-24 h-24 object-contain rounded mb-2">
+            <img src="{{ Storage::url($c->cover_image) }}" class="w-32 h-auto object-contain rounded mb-2 border border-gray-800">
         @endif
         <input type="file" name="cover_image" accept="image/*" class="text-sm text-text-muted">
         @error('cover_image') <p class="text-red-400 text-xs mt-1">{{ $message }}</p> @enderror

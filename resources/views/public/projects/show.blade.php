@@ -1,5 +1,11 @@
 @extends('layouts.public')
 @section('title', $project->title)
+@section('seo_description', Str::limit(strip_tags($project->short_description ?? ''), 160))
+
+@push('meta')
+<meta property="og:type" content="article">
+@if($project->image)<meta property="og:image" content="{{ Storage::url($project->image) }}">@endif
+@endpush
 
 @section('content')
     <section class="py-20">
@@ -13,7 +19,7 @@
                 </nav>
 
                 @if($project->image)
-                    <img src="{{ Storage::url($project->image) }}" alt="{{ $project->title }}" class="w-full h-64 md:h-80 object-cover rounded-lg mb-8">
+                    <img src="{{ Storage::url($project->image) }}" alt="{{ $project->title }}" loading="lazy" class="w-full h-64 md:h-80 object-cover rounded-lg mb-8">
                 @endif
 
                 <div class="flex flex-wrap items-center gap-3 mb-4">
