@@ -8,7 +8,7 @@ if [ ! -f .env ]; then
     cp .env.example .env 2>/dev/null || touch .env
 fi
 
-# ── Dynamic port (Railway sets $PORT automatically) ───────────
+# ── Dynamic port (Render/Railway set $PORT automatically) ─────
 PORT="${PORT:-10000}"
 sed -i "s/listen [0-9]*/listen ${PORT}/" /etc/nginx/sites-available/default
 echo "Nginx listening on port ${PORT}"
@@ -39,8 +39,10 @@ if [ "${DB_CONNECTION:-sqlite}" = "sqlite" ]; then
     chown -R www-data:www-data "$(dirname "$DB_PATH")"
 fi
 
-# ── Migrations (no auto-seed: avoids duplicating data on every restart) ──
+# ── Migrations + seed (DatabaseSeeder is idempotent: safe on every boot,
+#    needed since free-tier hosting wipes the filesystem on every cold start) ──
 php artisan migrate --force
+php artisan db:seed --force
 
 # ── Cache for production ─────────────────────────────────────
 php artisan config:cache
