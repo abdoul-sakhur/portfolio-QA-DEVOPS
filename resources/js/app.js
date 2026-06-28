@@ -3,6 +3,18 @@ import './bootstrap';
 import Alpine from 'alpinejs';
 import intersect from '@alpinejs/intersect';
 
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
+
+toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    positionClass: 'toast-top-right',
+    timeOut: 4000,
+    newestOnTop: true,
+};
+window.toastr = toastr;
+
 // highlight.js — core only + langues pertinentes pour un blog QA/DevOps
 import hljs from 'highlight.js/lib/core';
 import php from 'highlight.js/lib/languages/php';

@@ -17,36 +17,57 @@
     <div class="fixed top-0 left-0 h-0.5 bg-accent z-50 transition-[width] duration-100 ease-out" :style="`width: ${progress}%`"></div>
 </div>
 
-<article class="py-20" x-data>
-    <div class="container mx-auto px-6">
+@php $readingTime = max(1, (int) ceil(str_word_count(strip_tags($post->content ?? '')) / 200)); @endphp
+
+{{-- Hero d'en-tête --}}
+<header class="relative overflow-hidden border-b border-gray-800" x-data>
+    <div class="absolute inset-0 bg-gradient-to-br from-accent/10 via-bg-dark to-bg-dark"></div>
+    <div class="relative container mx-auto px-6 py-16 md:py-20">
         <div class="max-w-3xl mx-auto">
 
             {{-- Breadcrumb --}}
-            <nav class="mb-8 flex items-center gap-2 font-mono text-xs text-text-muted">
+            <nav class="mb-6 flex items-center gap-2 font-mono text-xs text-text-muted">
                 <a href="{{ route('blog.index') }}" class="hover:text-accent transition">~/blog</a>
                 <span class="text-gray-700">/</span>
                 <span class="text-text-main truncate">{{ Str::limit($post->title, 50) }}</span>
             </nav>
+
+            {{-- Catégorie --}}
+            @if($post->category)
+                <span class="inline-block text-accent bg-accent/10 border border-accent/20 px-3 py-1 rounded-full font-mono text-xs mb-4">{{ $post->category->name }}</span>
+            @endif
+
+            {{-- Titre --}}
+            <h1 class="text-3xl md:text-4xl font-bold text-text-main mb-6 leading-tight">{{ $post->title }}</h1>
+
+            {{-- Meta : auteur, date, temps de lecture --}}
+            <div class="flex flex-wrap items-center gap-6 font-mono text-xs text-text-muted">
+                <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    {{ setting('hero_name', 'Abdoul Sarba') }}
+                </span>
+                <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    {{ $post->published_at?->translatedFormat('d F Y') }}
+                </span>
+                <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    ~{{ $readingTime }} min de lecture
+                </span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<article class="py-16" x-data>
+    <div class="container mx-auto px-6">
+        <div class="max-w-3xl mx-auto">
 
             {{-- Cover image --}}
             @if($post->cover_image)
                 <img src="{{ Storage::url($post->cover_image) }}" alt="{{ $post->title }}" loading="lazy"
                      class="w-full h-64 md:h-96 object-cover rounded-lg mb-8 border border-gray-800">
             @endif
-
-            {{-- Meta --}}
-            @php $readingTime = max(1, (int) ceil(str_word_count(strip_tags($post->content ?? '')) / 200)); @endphp
-            <div class="flex flex-wrap items-center gap-3 mb-4 font-mono text-xs">
-                @if($post->category)
-                    <span class="text-accent bg-accent/10 border border-accent/20 px-3 py-1 rounded-full">{{ $post->category->name }}</span>
-                @endif
-                <span class="text-text-muted">{{ $post->published_at?->format('d M Y') }}</span>
-                <span class="text-gray-700">·</span>
-                <span class="text-text-muted">~{{ $readingTime }} min de lecture</span>
-            </div>
-
-            {{-- Titre --}}
-            <h1 class="text-3xl md:text-4xl font-bold text-text-main mb-6 leading-tight">{{ $post->title }}</h1>
 
             {{-- Extrait --}}
             @if($post->excerpt)
@@ -142,7 +163,7 @@
                             </a>
                         @endif
                         <div class="flex items-center gap-2 mb-2 font-mono text-xs text-text-muted">
-                            <span>{{ $rel->published_at?->format('d M Y') }}</span>
+                            <span>{{ $rel->published_at?->translatedFormat('d F Y') }}</span>
                             <span class="text-gray-700">·</span>
                             <span>~{{ $relReading }} min</span>
                         </div>

@@ -31,12 +31,16 @@ fi
 # ── Storage link ──────────────────────────────────────────────
 php artisan storage:link 2>/dev/null || true
 
-# ── SQLite database ──────────────────────────────────────────
-touch database/database.sqlite
-chown -R www-data:www-data database
+# ── SQLite database (only when DB_CONNECTION=sqlite) ─────────
+if [ "${DB_CONNECTION:-sqlite}" = "sqlite" ]; then
+    DB_PATH="${DB_DATABASE:-/var/www/html/database/database.sqlite}"
+    mkdir -p "$(dirname "$DB_PATH")"
+    touch "$DB_PATH"
+    chown -R www-data:www-data "$(dirname "$DB_PATH")"
+fi
 
-# ── Migrations + seed ────────────────────────────────────────
-php artisan migrate --force --seed 2>/dev/null || php artisan migrate --force
+# ── Migrations (no auto-seed: avoids duplicating data on every restart) ──
+php artisan migrate --force
 
 # ── Cache for production ─────────────────────────────────────
 php artisan config:cache

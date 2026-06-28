@@ -146,55 +146,6 @@
     </section>
     @endif
 
-    {{-- Testimonials --}}
-    @if($testimonials->count())
-    <section class="py-20 reveal">
-        <div class="container mx-auto px-6">
-            <x-section-header subtitle="Ce que disent mes clients">
-                Témoignages
-            </x-section-header>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                @foreach($testimonials as $testimonial)
-                    <x-card class="flex flex-col relative overflow-hidden">
-                        {{-- Guillemet décoratif --}}
-                        <span class="absolute top-3 right-4 text-7xl text-accent/8 font-serif leading-none select-none pointer-events-none" aria-hidden="true">"</span>
-
-                        {{-- Rating blocs --}}
-                        <div class="flex items-center gap-1.5 mb-5">
-                            @for($i = 1; $i <= 5; $i++)
-                                <span class="w-5 h-1.5 rounded-sm {{ $i <= $testimonial->rating ? 'bg-accent' : 'bg-gray-800' }}"></span>
-                            @endfor
-                            <span class="text-accent font-mono text-xs ml-1">{{ $testimonial->rating }}.0</span>
-                        </div>
-
-                        {{-- Contenu --}}
-                        <p class="text-text-muted text-sm leading-relaxed flex-1 mb-6">{{ $testimonial->content }}</p>
-
-                        {{-- Auteur --}}
-                        <div class="border-t border-gray-800/60 pt-4 flex items-center gap-3">
-                            @if($testimonial->client_photo)
-                                <img src="{{ Storage::url($testimonial->client_photo) }}" alt="{{ $testimonial->client_name }}" loading="lazy" class="w-9 h-9 rounded-full object-cover border border-accent/20 flex-shrink-0">
-                            @else
-                                <div class="w-9 h-9 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center text-accent font-bold font-mono text-sm flex-shrink-0">
-                                    {{ strtoupper(substr($testimonial->client_name, 0, 1)) }}
-                                </div>
-                            @endif
-                            <div class="min-w-0">
-                                <p class="text-text-main text-sm font-semibold truncate">{{ $testimonial->client_name }}</p>
-                                @if($testimonial->client_role || $testimonial->client_company)
-                                    <p class="text-text-muted text-xs font-mono truncate">
-                                        {{ $testimonial->client_role }}{{ $testimonial->client_role && $testimonial->client_company ? ' @ ' : '' }}{{ $testimonial->client_company }}
-                                    </p>
-                                @endif
-                            </div>
-                        </div>
-                    </x-card>
-                @endforeach
-            </div>
-        </div>
-    </section>
-    @endif
 
     {{-- Latest Blog Posts --}}
     @if($latestPosts->count())
@@ -216,7 +167,7 @@
                         <h3 class="text-lg font-bold text-text-main mb-2">{{ $post->title }}</h3>
                         <p class="text-text-muted text-sm flex-1 mb-4">{{ Str::limit($post->excerpt, 120) }}</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-xs text-text-muted">{{ $post->published_at?->format('d M Y') }}</span>
+                            <span class="text-xs text-text-muted">{{ $post->published_at?->translatedFormat('d F Y') }}</span>
                             <a href="{{ route('blog.show', $post->slug) }}" class="text-accent text-sm hover:underline">Lire →</a>
                         </div>
                     </x-card>

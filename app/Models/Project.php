@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 
 class Project extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'title', 'slug', 'description', 'cover_image', 'url',
         'github_url', 'category_id', 'is_featured', 'order',

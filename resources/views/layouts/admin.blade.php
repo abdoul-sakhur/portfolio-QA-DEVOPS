@@ -115,26 +115,12 @@
             </header>
 
             <div class="p-6">
-                @if(session('success'))
-                    <div class="mb-4 p-4 bg-green-900/30 border border-green-700 text-green-400 rounded-lg" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)" x-transition>
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                @if($errors->any())
-                    <div class="mb-4 p-4 bg-red-900/30 border border-red-700 text-red-400 rounded-lg">
-                        <ul class="list-disc list-inside">
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-
                 @yield('content')
             </div>
         </div>
     </div>
+
+    @include('partials.toasts')
 
     @stack('scripts')
 </body>

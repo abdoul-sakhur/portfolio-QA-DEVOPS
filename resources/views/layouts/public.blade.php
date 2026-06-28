@@ -166,6 +166,8 @@
         </div>
     </footer>
 
+    @include('partials.toasts')
+
     @stack('scripts')
 </body>
 </html>
