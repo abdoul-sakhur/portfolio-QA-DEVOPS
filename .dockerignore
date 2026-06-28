@@ -12,12 +12,6 @@ docker-compose.*
 README.md
 npm-debug.log
 yarn.lock
-node_modules
-.env
-.env.docker
-!.env.example
-.git
-.github
 storage/framework/cache/data
 storage/logs
 storage/debugbar
